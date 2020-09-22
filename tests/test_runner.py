@@ -13,8 +13,8 @@ def to_church(value: int) -> Term:
 
 
 CASES = [
-    (
 # ------------------------------------------------------------------------------
+    (
         [
             # Definition of zero
             # \f. \x. x
@@ -53,9 +53,12 @@ CASES = [
                 Abs(
                     "j",
                     body=Abs(
-                        "k", body=Abs(
-                            "f", body=Abs(
-                                "x", body=App(
+                        "k",
+                        body=Abs(
+                            "f",
+                            body=Abs(
+                                "x",
+                                body=App(
                                     App(
                                         Var("j"), Var("f")
                                     ),
@@ -81,7 +84,8 @@ CASES = [
         ),
         # Which, being normalized, is expected to be equal 5
         Abs(
-            "f", Abs(
+            "f",
+            Abs(
                 "x",
                 App(
                     Var("f"),
@@ -101,7 +105,6 @@ CASES = [
             )
         ),
     ),
-# ------------------------------------------------------------------------------
 ]
 
 

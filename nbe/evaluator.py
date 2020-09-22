@@ -1,15 +1,23 @@
 from __future__ import annotations
+
+
 from typing import List, Tuple
+
+
 from .terms import Term, Var, Abs, App
 from .exceptions import EvaluationError
+
+# to avoid import cycles
 from . import context
 
 
 class Value:
+    """Base class for every value"""
     pass
 
 
 class Neutral:
+    """Base class for every neutral value"""
     pass
 
 
@@ -31,6 +39,7 @@ class VClosure(Value):
         self.context = context
         self.name = name
         self.term = term
+
 
 class VNeutral(Value):
     """A neutral value
@@ -73,7 +82,7 @@ def do_apply(rator: Value, rand: Value) -> Value:
 
 
 def evaluate(context: context.Context, term: Term) -> Value:
-    """Convers term into a value form
+    """Converts a term into it's value form.
     """
     if isinstance(term, Var):
         return lookupvar(context, term.varname)
@@ -89,6 +98,8 @@ def evaluate(context: context.Context, term: Term) -> Value:
 
 
 def init_context(term_context: List[Tuple[str, Term]]) -> context.Context:
+    """Build the initial value context from name-term pairs.
+    """
     current_value_context = context.Context()
     if not term_context:
         return context.Context()
@@ -99,6 +110,8 @@ def init_context(term_context: List[Tuple[str, Term]]) -> context.Context:
 
 
 def read_back(names: List[str], value: Value) -> Term:
+    """Reads back (or reifies) values into their term like form.
+    """
     if isinstance(value, VNeutral):
         if isinstance(value.neutral, NVar):
             return Var(varname=value.neutral.varname)
@@ -122,6 +135,9 @@ def read_back(names: List[str], value: Value) -> Term:
 
 
 def normalize(term: Term) -> Term:
+    """Here goes the magic - the combination of term evaluation followed by
+    reading the result back into syntax form gives you a normal form.
+    """
     return read_back(
         names=list(),
         value=evaluate(
