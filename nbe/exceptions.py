@@ -1,0 +1,2 @@
+class EvaluationError(ValueError):
+    pass
