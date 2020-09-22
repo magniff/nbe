@@ -16,6 +16,7 @@ CASES = [
     (
 # ------------------------------------------------------------------------------
         [
+            # Definition of zero
             # \f. \x. x
             (
                 "zero", 
@@ -24,6 +25,7 @@ CASES = [
                     body=Abs(varname="x", body=Var("x"))
                 )
             ),
+            # Definition of succ or add1 function
             # \n. \f. \x. f (n f x)
             (
                 "add1", 
@@ -44,6 +46,7 @@ CASES = [
                     )
                 )
             ),
+            # Definition of the + operator for Church numerals
             # \j. \k. \f. \x. j f (k f x)
             (
                 "+", 
@@ -69,12 +72,14 @@ CASES = [
                 )
             ),
         ],
+        # Now we a ready to define the term 2 + 3
         App(
             App(
                 Var("+"), to_church(2)
             ),
             to_church(3)
         ),
+        # Which, being normalized, is expected to be equal 5
         Abs(
             "f", Abs(
                 "x",
