@@ -7,7 +7,7 @@ setuptools.setup(
     version="0.0.1",
     license="MIT license",
     author="magniff",
-    url="https://github.com/magniff/pynbe",
+    url="https://github.com/magniff/nbe",
     packages=[
         "nbe",
     ],
