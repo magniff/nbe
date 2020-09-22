@@ -1,5 +1,9 @@
+from __future__ import annotations
+
+
 class Term:
-    pass
+    def __eq__(self, other: Term) -> bool:
+        return type(self) == type(other) and repr(self) == repr(other)
 
 
 class Abs(Term):

@@ -75,7 +75,26 @@ CASES = [
             ),
             to_church(3)
         ),
-        None,
+        Abs(
+            "f", Abs(
+                "x",
+                App(
+                    Var("f"),
+                    App(
+                        Var("f"),
+                        App(
+                            Var("f"),
+                            App(
+                                Var("f"),
+                                App(
+                                    Var("f"), Var("x")
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        ),
     ),
 # ------------------------------------------------------------------------------
 ]
@@ -83,4 +102,4 @@ CASES = [
 
 @pytest.mark.parametrize("context,program,expected", CASES)
 def test_runner(context, program, expected):
-    print(run_program(term_context=context, term=program))
+    assert run_program(term_context=context, term=program) == expected
