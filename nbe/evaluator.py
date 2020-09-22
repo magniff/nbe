@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import List, Tuple
 from .terms import Term, Var, Abs, App
 from .exceptions import EvaluationError
@@ -8,11 +9,34 @@ class Value:
     pass
 
 
+class Neutral:
+    pass
+
+
+class NVar(Neutral):
+    def __init__(self, varname: str) -> None:
+        self.varname = varname
+
+
+class NApp(Neutral):
+    def __init__(self, left: Neutral, right: Value) -> None:
+        self.left = left
+        self.right = right
+
+
 class VClosure(Value):
+    """A closure value
+    """
     def __init__(self, context: context.Context, name: str, term: Term):
         self.context = context
         self.name = name
         self.term = term
+
+class VNeutral(Value):
+    """A neutral value
+    """
+    def __init__(self, neutral: Neutral) -> None:
+        self.neutral = neutral
 
 
 def fresh_name(names: List[str], name: str) -> str:
