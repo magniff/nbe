@@ -13,14 +13,6 @@ def to_church(value: int) -> Term:
 
 
 CASES = [
-# ------------------------------------------------------------------------------
-    (
-        [
-            ("a", Abs("x", Var("x"))),
-        ],
-        Var("a"),
-        None
-    ),
     (
 # ------------------------------------------------------------------------------
         [
@@ -40,7 +32,7 @@ CASES = [
                     body=Abs(
                         varname="f", body=Abs(
                             "x", body=App(
-                                Var("x"),
+                                Var("f"),
                                 App(
                                     App(
                                         Var("n"), Var("f")
@@ -91,4 +83,4 @@ CASES = [
 
 @pytest.mark.parametrize("context,program,expected", CASES)
 def test_runner(context, program, expected):
-    print(run_program(term_context=context, term=program).term)
+    print(run_program(term_context=context, term=program))
