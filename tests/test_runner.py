@@ -110,4 +110,6 @@ CASES = [
 
 @pytest.mark.parametrize("context,program,expected", CASES)
 def test_runner(context, program, expected):
-    assert run_program(term_context=context, term=program) == expected
+    normal_form = run_program(term_context=context, term=program)
+    print(normal_form)
+    assert normal_form == expected

@@ -1,51 +1,52 @@
-from __future__ import annotations
-
-
 from typing import List, Tuple
+from dataclasses import dataclass
 
 
 from .terms import Term, Var, Abs, App
 from .exceptions import EvaluationError
 
+
 # to avoid import cycles
 from . import context
 
 
+@dataclass
 class Value:
     """Base class for every value"""
     pass
 
 
+@dataclass
 class Neutral:
     """Base class for every neutral value"""
     pass
 
 
+@dataclass
 class NVar(Neutral):
-    def __init__(self, varname: str) -> None:
-        self.varname = varname
+    varname: str
 
 
+@dataclass
 class NApp(Neutral):
-    def __init__(self, left: Neutral, right: Value) -> None:
-        self.left = left
-        self.right = right
+    left: Neutral
+    right: Value
 
 
+@dataclass
 class VClosure(Value):
     """A closure value
     """
-    def __init__(self, context: context.Context, name: str, term: Term):
-        self.context = context
-        self.name = name
-        self.term = term
+    context: context.Context
+    name: str
+    term: Term
 
 
+@dataclass
 class VNeutral(Value):
     """A neutral value
     """
-    def __init__(self, neutral: Neutral) -> None:
-        self.neutral = neutral
+    neutral: Neutral
 
 
 def fresh_name(names: List[str], name: str) -> str:
@@ -70,9 +71,7 @@ def do_apply(rator: Value, rand: Value) -> Value:
     """
     if isinstance(rator, VClosure):
         return evaluate(
-            context=rator.context.forkwith(
-                name=rator.name, value=rand
-            ),
+            context=rator.context.forkwith(name=rator.name, value=rand),
             term=rator.term
         )
     elif isinstance(rator, VNeutral):
@@ -90,8 +89,8 @@ def evaluate(context: context.Context, term: Term) -> Value:
         return VClosure(context=context.fork(), name=term.varname, term=term.body)
     elif isinstance(term, App):
         return do_apply(
-            evaluate(context, term.left),
-            evaluate(context, term.right),
+            rator=evaluate(context, term.left),
+            rand=evaluate(context, term.right),
         )
     else:
         raise EvaluationError("How to evaluate %s?" % repr(term))

@@ -9,9 +9,6 @@ from collections import deque
 from . import evaluator
 
 
-NoneType = type(None)
-
-
 class Context:
 
     def fork(self) -> Context:
@@ -22,7 +19,7 @@ class Context:
         new.add((name, value))
         return new
 
-    def get(self, name: str) -> Union[evaluator.Value, NoneType]:
+    def get(self, name: str) -> Union[evaluator.Value, None]:
         for (key, value) in self.items:
             if name == key:
                 return value
